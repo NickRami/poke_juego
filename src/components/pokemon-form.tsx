@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { FormEvent } from "react";
 import { GameState } from "../hooks/use-game-manager";
 
 interface PokemonFormProps {
@@ -6,52 +7,50 @@ interface PokemonFormProps {
     gameState: GameState;
 }
 
-const PokemonForm = ({handlePokemon,gameState}:PokemonFormProps) => {
-
+const PokemonForm = ({ handlePokemon, gameState }: PokemonFormProps) => {
     const [inputValue, setInputValue] = useState("");
-    
+    const isInteractionDisabled = gameState !== GameState.Playing;
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (inputValue.trim()) {
-            console.log(`Input value submitted: ${inputValue.trim()}`);
-            
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        const normalizedValue = inputValue.trim();
+        if (!normalizedValue) {
+            return;
         }
-        
-        handlePokemon(inputValue.trim());
-       setInputValue(""); // Limpiar el campo de entrada después de enviar
-    }
 
-    
+        handlePokemon(normalizedValue);
+        setInputValue("");
+    };
 
-  return (
-   
-       
-                <form onSubmit={handleSubmit} className="input-group mb-3">
-                    <input 
-                    type="text" 
-                    className="form-control" 
-                    placeholder='¿Quien es ese Pokémon?' 
-                    aria-label="Recipient’s username" 
-                    onChange={(e)=> setInputValue(e.target.value)} 
-                    autoFocus 
-                    disabled={gameState !== GameState.Playing}
+    return (
+        <form onSubmit={handleSubmit} className="guess-form">
+            <label htmlFor="pokemonGuess" className="guess-form__label">
+                Ingresa tu respuesta
+            </label>
+
+            <div className="guess-form__controls">
+                <input
+                    id="pokemonGuess"
+                    type="text"
+                    className="guess-form__input"
+                    placeholder="Ejemplo: pikachu"
+                    aria-describedby="guess-helper"
+                    onChange={(event) => setInputValue(event.target.value)}
+                    autoFocus
+                    disabled={isInteractionDisabled}
                     value={inputValue}
-                    />
-                    
-                    <button 
-                    className="btn btn-outline-secondary" 
-                    type="submit"
-                    disabled={gameState !== GameState.Playing}
-                  
-                    >
-                        Jugar
-                    </button>
-                </form>
-           
-        
-   
-  )
-}
+                />
+                <button type="submit" className="guess-form__button" disabled={isInteractionDisabled}>
+                    Responder
+                </button>
+            </div>
 
-export default PokemonForm
+            <p id="guess-helper" className="guess-form__helper">
+                Escribe el nombre sin tildes. Se aceptan respuestas en español o inglés.
+            </p>
+        </form>
+    );
+};
+
+export default PokemonForm;

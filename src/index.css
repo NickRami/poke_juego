@@ -1,0 +1,328 @@
+:root {
+    color-scheme: light;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    --color-background: linear-gradient(135deg, #0f172a 0%, #1e293b 45%, #0f172a 100%);
+    --color-surface: rgba(15, 23, 42, 0.7);
+    --color-surface-strong: rgba(15, 23, 42, 0.92);
+    --color-primary: #ffcc00;
+    --color-primary-dark: #d4a200;
+    --color-success: #22c55e;
+    --color-danger: #ef4444;
+    --color-text: #f8fafc;
+    --color-text-muted: rgba(248, 250, 252, 0.72);
+    --shadow-soft: 0 24px 48px rgba(15, 23, 42, 0.4);
+    --shadow-glow: 0 12px 32px rgba(255, 204, 0, 0.25);
+    --border-radius-lg: 28px;
+    --border-radius-md: 18px;
+    --border-radius-sm: 12px;
+    --transition-default: 180ms ease;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Poppins", "Segoe UI", sans-serif;
+    background: var(--color-background);
+    color: var(--color-text);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 48px 16px 64px;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+button {
+    font-family: inherit;
+}
+
+.app-shell {
+    width: min(960px, 100%);
+}
+
+.app-shell__content {
+    background: var(--color-surface);
+    backdrop-filter: blur(18px);
+    border-radius: var(--border-radius-lg);
+    padding: 56px clamp(24px, 6vw, 64px);
+    box-shadow: var(--shadow-soft);
+    position: relative;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.app-header {
+    text-align: center;
+    margin-bottom: clamp(24px, 6vw, 48px);
+}
+
+.app-header__title {
+    font-size: clamp(2.4rem, 5vw, 3rem);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0 0 12px;
+}
+
+.app-header__subtitle {
+    margin: 0;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: var(--color-text-muted);
+}
+
+.app-panel {
+    display: grid;
+    gap: clamp(16px, 3vw, 28px);
+}
+
+.app-alert {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-radius: var(--border-radius-sm);
+    border: 1px solid rgba(248, 113, 113, 0.45);
+    background-color: rgba(248, 113, 113, 0.1);
+    color: var(--color-text);
+    gap: 16px;
+}
+
+.app-alert__action {
+    border: none;
+    background: var(--color-danger);
+    color: #fff;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform var(--transition-default), box-shadow var(--transition-default);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.35);
+}
+
+.app-alert__action:hover,
+.app-alert__action:focus-visible {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(239, 68, 68, 0.4);
+}
+
+.pokemon-card {
+    background: var(--color-surface-strong);
+    border-radius: var(--border-radius-md);
+    padding: clamp(24px, 5vw, 32px);
+    display: grid;
+    gap: 24px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    transition: border-color var(--transition-default), transform var(--transition-default);
+}
+
+.pokemon-card--revealed {
+    border-color: rgba(253, 224, 71, 0.6);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft), var(--shadow-glow);
+}
+
+.pokemon-card__header {
+    display: grid;
+    gap: 12px;
+    text-align: center;
+}
+
+.pokemon-card__tag {
+    display: inline-block;
+    align-self: center;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(255, 204, 0, 0.16);
+    color: var(--color-primary);
+    border: 1px solid rgba(255, 204, 0, 0.3);
+}
+
+.pokemon-card__title {
+    margin: 0;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    letter-spacing: 0.03em;
+}
+
+.pokemon-card__body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 240px;
+}
+
+.pokemon-card__image {
+    width: clamp(180px, 40vw, 240px);
+    filter: drop-shadow(0 24px 32px rgba(15, 23, 42, 0.35));
+    transition: filter var(--transition-default), transform var(--transition-default);
+}
+
+.pokemon-card__image--hidden {
+    filter: brightness(0) saturate(100%) contrast(120%);
+}
+
+.pokemon-card__loader {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 204, 0, 0.18);
+    border-top-color: var(--color-primary);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.guess-form {
+    display: grid;
+    gap: 12px;
+}
+
+.guess-form__label {
+    font-weight: 500;
+    color: var(--color-text-muted);
+}
+
+.guess-form__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.guess-form__input {
+    flex: 1 1 240px;
+    min-width: 0;
+    padding: 14px 18px;
+    border-radius: var(--border-radius-sm);
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    background: rgba(15, 23, 42, 0.65);
+    color: var(--color-text);
+    font-size: 1rem;
+    transition: border-color var(--transition-default), box-shadow var(--transition-default);
+}
+
+.guess-form__input:focus {
+    outline: none;
+    border-color: rgba(255, 204, 0, 0.55);
+    box-shadow: 0 0 0 4px rgba(255, 204, 0, 0.18);
+}
+
+.guess-form__input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.guess-form__button {
+    flex: 0 0 auto;
+    padding: 14px 24px;
+    font-weight: 600;
+    border-radius: var(--border-radius-sm);
+    border: none;
+    background: linear-gradient(135deg, var(--color-primary) 0%, #ffe066 100%);
+    color: #0f172a;
+    cursor: pointer;
+    transition: transform var(--transition-default), box-shadow var(--transition-default), filter var(--transition-default);
+    box-shadow: 0 10px 18px rgba(255, 204, 0, 0.26);
+}
+
+.guess-form__button:hover,
+.guess-form__button:focus-visible {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 24px rgba(255, 204, 0, 0.32);
+    filter: saturate(105%);
+}
+
+.guess-form__button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.guess-form__helper {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.result-banner {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px clamp(18px, 4vw, 28px);
+    border-radius: var(--border-radius-md);
+    border: 1px solid transparent;
+}
+
+.result-banner--success {
+    border-color: rgba(34, 197, 94, 0.32);
+    background: rgba(34, 197, 94, 0.12);
+    box-shadow: 0 12px 24px rgba(34, 197, 94, 0.22);
+}
+
+.result-banner--error {
+    border-color: rgba(239, 68, 68, 0.32);
+    background: rgba(239, 68, 68, 0.12);
+    box-shadow: 0 12px 24px rgba(239, 68, 68, 0.22);
+}
+
+.result-banner__title {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.result-banner__description {
+    margin: 4px 0 0;
+    color: var(--color-text-muted);
+}
+
+.result-banner__action {
+    align-self: flex-start;
+    border: none;
+    border-radius: 999px;
+    padding: 12px 22px;
+    font-weight: 600;
+    background: rgba(15, 23, 42, 0.85);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: transform var(--transition-default), box-shadow var(--transition-default);
+}
+
+.result-banner__action:hover,
+.result-banner__action:focus-visible {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.35);
+}
+
+@media (max-width: 720px) {
+    body {
+        padding: 32px 12px;
+    }
+
+    .app-shell__content {
+        padding: 40px 20px;
+    }
+
+    .result-banner {
+        align-items: stretch;
+    }
+
+    .result-banner__action {
+        width: 100%;
+        text-align: center;
+    }
+}

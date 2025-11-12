@@ -2,51 +2,42 @@ import { GameState } from "../hooks/use-game-manager";
 import type { Pokemon } from "../types/pokemon.interface";
 
 interface Props {
-    pokemon : Pokemon | null,
+    pokemon: Pokemon | null;
     isLoading: boolean;
-    gameState: GameState
+    gameState: GameState;
 }
 
-const PokemonDisplay = ({pokemon, isLoading,gameState}:Props) => {
-
+const PokemonDisplay = ({ pokemon, isLoading, gameState }: Props) => {
     const showAnswer = gameState !== GameState.Playing;
-    // Si el juego está en estado "Playing", no mostrar la respuesta
     const image = pokemon?.image;
-    const name = pokemon?.name;
+    const name = pokemon?.name ?? "";
+    const formattedName = name.toUpperCase();
 
-    console.log(name);
-    
-    
+    return (
+        <article className={`pokemon-card ${showAnswer ? "pokemon-card--revealed" : ""}`}>
+            <header className="pokemon-card__header">
+                <span className="pokemon-card__tag">{showAnswer ? "¡Respuesta!" : "Reto"}</span>
+                <h2 className="pokemon-card__title">
+                    {showAnswer ? formattedName : "¿Quién es ese Pokémon?"}
+                </h2>
+            </header>
 
-
-  return (
-    <div className=" card mb-3">
-        <div className="card-header">
-            <h2 className="text-center">
-                {
-                showAnswer ? name?.toUpperCase() : '¿Quién es ese Pokémon?'
-               }
-
-            </h2>
-
-
-
-        </div>
-        <div className="card-body">
-            <div className="text-center">
+            <div className="pokemon-card__body">
                 {isLoading ? (
-                    <div className="spinner-border text-primary" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>
+                    <div className="pokemon-card__loader" role="status" aria-live="assertive" aria-label="Cargando Pokémon" />
                 ) : (
-                    image && <img src={image} style={
-                        { width: "200px", height: "200px", filter: showAnswer ? "none" : 'brightness(0)' }
-                    } alt={name} className="img-fluid" />
+                    image && (
+                        <img
+                            src={image}
+                            alt={showAnswer ? `Imagen oficial de ${formattedName}` : "Silueta de un Pokémon"}
+                            className={`pokemon-card__image ${showAnswer ? "" : "pokemon-card__image--hidden"}`}
+                            loading="lazy"
+                        />
+                    )
                 )}
             </div>
-         </div>   
-    </div>
-  )
-}
+        </article>
+    );
+};
 
-export default PokemonDisplay
+export default PokemonDisplay;
